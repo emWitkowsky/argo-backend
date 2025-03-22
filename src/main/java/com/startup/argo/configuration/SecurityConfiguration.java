@@ -38,8 +38,8 @@ public class SecurityConfiguration {
                                 .requestMatchers("/api/v0/**").permitAll()
                                 .requestMatchers("/hello-world").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/v0/**").permitAll()
-                                .anyRequest().authenticated()
-//                                .anyRequest().permitAll() // so far we let that say
+//                                .anyRequest().authenticated()
+                                .anyRequest().permitAll() // so far we let that say
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
