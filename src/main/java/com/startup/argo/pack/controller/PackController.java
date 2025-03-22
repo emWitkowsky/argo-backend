@@ -31,6 +31,11 @@ public class PackController {
         return packService.getAllPacks();
     }
 
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello World";
+    }
+
     @GetMapping("/{id}")
     public PackResponseDto getPackById(@PathVariable UUID id) {
         return packService.getPackById(id);

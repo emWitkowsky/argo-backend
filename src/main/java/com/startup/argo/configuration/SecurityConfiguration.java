@@ -25,8 +25,8 @@ public class SecurityConfiguration {
 
     private final JwtAuthConverter jwtAuthConverter;
 
-    @Value("jwkSetUri")
-    private final String jwkSetUri;
+//    @Value("jwkSetUri")
+//    private final String jwkSetUri;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -66,6 +66,6 @@ public class SecurityConfiguration {
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        return NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
+        return NimbusJwtDecoder.withJwkSetUri("http://keycloak:8080/realms/Argo/protocol/openid-connect/certs").build();
     }
 }
