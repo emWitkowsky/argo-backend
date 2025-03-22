@@ -1,0 +1,104 @@
+#services:
+#  database:
+#    image: postgres:16-alpine
+#    restart: always
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      POSTGRES_PASSWORD: admin
+#      POSTGRES_USER: admin
+#      POSTGRES_DB: argo-platform
+#    networks:
+#      - argo-network
+#    volumes:
+#      - argo-volume:/var/lib/postgresql/data
+#  backend:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile.dev
+#    restart: always
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - database
+#    networks:
+#      - argo-network
+#    develop:
+#      watch:
+#        - action: sync+restart
+#          path: .
+#          target: /opt/
+#
+#    keycloak:
+#      build:
+#        context: ./data
+#        dockerfile: Dockerfile.kc
+#      restart: always
+#      ports:
+#        - '8080:8080'
+#      networks:
+#        - argo-network
+#      environment:
+#        - KEYCLOAK_ADMIN=admin
+#        - KEYCLOAK_ADMIN_PASSWORD=admin
+#        - KC_HOSTNAME=localhost
+#        - KC_HTTP_PORT=8080
+#
+#
+#networks:
+#  argo-network:
+#    name: argo-network
+#volumes:
+#  argo-volume:
+
+services:
+  database:
+    image: postgres:16-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_DB: argo-platform
+    networks:
+      - argo-network
+    volumes:
+      - argo-volume:/var/lib/postgresql/data
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - "9090:9090"
+    depends_on:
+      - database
+    networks:
+      - argo-network
+    develop:
+      watch:
+        - action: sync+restart
+          path: .
+          target: /opt/
+  keycloak:
+    build:
+      context: ./data
+      dockerfile: Dockerfile.kc
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - argo-network
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_HOSTNAME=localhost
+      - KC_HTTP_PORT=8080
+
+networks:
+  argo-network:
+    name: argo-network
+
+volumes:
+  argo-volume:
